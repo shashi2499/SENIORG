@@ -8,7 +8,7 @@ export type ImageSlot =
   | "paints" | "phone" | "temple" | "park" | "hibiscus" | "meeting";
 
 export function img(slot: ImageSlot): string {
-  return `/images/${slot}.jpg`;
+  return `${import.meta.env.BASE_URL}images/${slot}.jpg`;
 }
 
 // Where the subject sits in each photo, so crops never cut the important part.
