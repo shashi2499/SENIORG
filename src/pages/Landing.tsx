@@ -5,21 +5,13 @@ import {
   ArrowRight,
   CalendarClock,
   Check,
-  CheckCircle2,
   ChevronDown,
-  Clock3,
-  FileCheck2,
-  PlayCircle,
-  ShieldCheck,
-  Ticket,
-  Users,
-  Wrench,
 } from "lucide-react";
 import { Photo } from "@/components/ds/Photo";
 import { Wordmark } from "@/components/shell/TopBar";
 import { DIRECT_NAME, DIRECT_TAGLINE, DirectMark, DirectProspectSheet } from "@/components/direct/SeniorGDirect";
 import { CHECKOUT_NOTE, MEMBERSHIP_PRICE, PRICE_NOTE, TRIAL_DAYS } from "@/lib/onboarding";
-import type { ImageSlot } from "@/lib/imagery";
+import { ShowcaseCarousel } from "@/components/landing/ShowcaseCarousel";
 
 const ease = [0.2, 0, 0, 1] as const;
 
@@ -109,7 +101,7 @@ export function Landing() {
               transition={{ duration: 0.55, ease, delay: 0.05 }}
               className="mt-5 text-balance font-serif text-[2.375rem] leading-[1.08] tracking-tight text-ink sm:text-[3.25rem] lg:text-[3.75rem]"
             >
-              Your trusted household service desk <span className="text-brand">for independent ageing.</span>
+              Your trusted companion <span className="text-brand">for independent ageing.</span>
             </motion.h1>
             <ul className="mt-6 space-y-1.5">
               {["Live independently.", "Get things done.", "Stay connected."].map((line, i) => (
@@ -144,23 +136,13 @@ export function Landing() {
           </div>
 
           {/* Hero visual: one real photograph, three real moments from the product */}
-          <div className="relative mx-auto mt-12 aspect-[4/5] w-full max-w-[30rem] sm:aspect-[5/4] sm:max-w-none lg:mt-0 lg:aspect-[4/5]">
+          <div className="relative mx-auto mt-10 h-[17rem] w-full max-w-[30rem] sm:mt-12 sm:aspect-[5/4] sm:h-auto sm:max-w-none lg:mt-0 lg:aspect-[4/5]">
             <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, ease }} className="absolute inset-0">
               <Photo slot="home" eager className="h-full w-full shadow-hero" rounded="rounded-[2rem]" />
               <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-t from-brand-deep/45 via-transparent to-transparent" />
             </motion.div>
 
-            <Floating className="left-3 top-4 w-[15.5rem] max-w-[82%] sm:left-5 sm:top-6">
-              <p className="flex items-center gap-2 text-meta font-semibold text-ink-3">
-                <Wrench size={15} className="text-brand" /> AC repair · today
-              </p>
-              <p className="mt-1 font-semibold leading-snug text-ink">Technician arriving at 11:30 am</p>
-              <p className="mt-1.5 flex items-center gap-1.5 text-meta font-semibold text-success">
-                <CheckCircle2 size={15} /> Confirmed · verified provider
-              </p>
-            </Floating>
-
-            <Floating className="right-3 top-[42%] w-[14.5rem] max-w-[80%] sm:right-5" delay={0.6}>
+            <Floating className="bottom-4 left-3 w-[15rem] max-w-[86%] sm:bottom-auto sm:left-auto sm:right-5 sm:top-[42%] sm:w-[14.5rem]" delay={0.6}>
               <div className="flex items-center gap-3">
                 <DirectMark size="md" />
                 <div>
@@ -170,7 +152,7 @@ export function Landing() {
               </div>
             </Floating>
 
-            <Floating className="bottom-4 left-3 w-[16rem] max-w-[84%] sm:bottom-6 sm:left-5" delay={1.2}>
+            <Floating className="bottom-4 left-3 hidden w-[16rem] max-w-[84%] sm:bottom-6 sm:left-5 sm:block" delay={1.2}>
               <p className="flex items-center gap-2 text-meta font-semibold text-needs">
                 <CalendarClock size={15} /> Due in November
               </p>
@@ -179,67 +161,24 @@ export function Landing() {
           </div>
         </section>
 
-        {/* ── Get things done ─────────────────────────────────── */}
-        <section id="discover" className="scroll-mt-20 bg-card py-16 sm:py-20">
-          <div className="mx-auto max-w-page page-gutter">
-            <Reveal>
-              <Eyebrow>Get things done</Eyebrow>
-              <h2 className="mt-2 max-w-2xl text-balance font-serif text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
-                One request. SeniorG coordinates the rest.
+        {/* ── What SeniorG does: a compact, rotating showcase ── */}
+        <section id="discover" className="scroll-mt-20 py-14 sm:py-20">
+          <div className="mx-auto max-w-page">
+            <Reveal className="page-gutter">
+              <Eyebrow>What SeniorG does</Eyebrow>
+              <h2 className="mt-2 max-w-2xl text-balance font-serif text-[1.75rem] leading-tight text-ink sm:text-[2.25rem]">
+                Everyday life, kept in good order.
               </h2>
-              <p className="mt-3 max-w-reading text-body text-ink-2">
-                Verified people, clear prices before work starts, and every step visible to you — not hidden in phone calls.
-              </p>
             </Reveal>
-
-            <div className="mt-10 grid gap-5 lg:grid-cols-[1.25fr_1fr]">
-              {/* Home repairs — the lead story */}
-              <Reveal className="flex flex-col overflow-hidden rounded-[1.75rem] bg-brand-deep text-white shadow-hero">
-                <div className="relative">
-                  <Photo slot="ac" className="h-52 sm:h-64 lg:h-72" rounded="rounded-none" />
-                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-brand-deep to-transparent" />
-                </div>
-                <div className="flex-1 p-6 pt-4 sm:p-8 sm:pt-5">
-                  <p className="flex items-center gap-2 text-body-sm font-semibold text-accent">
-                    <Wrench size={17} /> Home Repairs
-                  </p>
-                  <p className="mt-2 max-w-md font-serif text-[1.75rem] leading-tight">AC, plumbing, electrical — booked, tracked and paid in one place.</p>
-                  <ol className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-meta text-white/85" aria-label="Example request progress">
-                    {["Requested", "Matched", "Confirmed", "Arriving"].map((s, i) => (
-                      <li key={s} className="flex items-center gap-1.5">
-                        {i < 3 ? <Check size={15} className="text-accent" /> : <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-accent" />}
-                        {s}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              </Reveal>
-
-              <div className="grid gap-5">
-                <ServiceStory
-                  slot="station"
-                  icon={<Users size={17} />}
-                  title="Go With Me"
-                  line="A trusted companion to the airport, the station or a hospital appointment."
-                  snippet="Companion meets you at the gate"
-                  delay={0.08}
-                />
-                <ServiceStory
-                  slot="spices"
-                  icon={<Clock3 size={17} />}
-                  title="Temporary House Help"
-                  line="When your regular help is away — cooking, cleaning, day by day."
-                  snippet="Mon ✓  Tue ✓  Wed — on the way"
-                  delay={0.16}
-                />
-              </div>
-            </div>
+            <Reveal delay={0.08} className="mt-7">
+              <ShowcaseCarousel />
+            </Reveal>
           </div>
         </section>
 
         {/* ── SeniorG Direct: the bell ────────────────────────── */}
         <section id="direct" className="scroll-mt-16 bg-brand-deep py-16 text-white sm:py-24">
-          <div className="mx-auto grid max-w-page items-center gap-12 page-gutter lg:grid-cols-[1fr_1fr]">
+          <div className="mx-auto max-w-page page-gutter">
             <Reveal>
               <DirectMark size="xl" pulse />
               <p className="mt-8 text-tag font-semibold uppercase tracking-[0.14em] text-accent">{DIRECT_NAME}</p>
@@ -262,103 +201,6 @@ export function Landing() {
               </div>
               <p className="mt-4 text-meta text-white/60">Look for the bell — wherever you see it, a person at SeniorG is one tap away.</p>
             </Reveal>
-
-            {/* A conversation, not a chatbot */}
-            <Reveal delay={0.1} className="rounded-[1.75rem] bg-white/[0.06] p-5 ring-1 ring-white/10 sm:p-7">
-              <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                <DirectMark size="md" />
-                <div>
-                  <p className="font-semibold">{DIRECT_NAME}</p>
-                  <p className="flex items-center gap-1.5 text-meta text-white/70">
-                    <span className="h-2 w-2 rounded-full bg-success" aria-hidden="true" /> Priya is available · demo
-                  </p>
-                </div>
-              </div>
-              <div className="mt-5 space-y-3">
-                <Bubble me>The technician says there's extra work on the AC. Should I approve it?</Bubble>
-                <Bubble>I've checked it against your quote. You can approve it in the app — or I can handle it for you. Your call.</Bubble>
-                <Bubble me>Please handle it. Tell me when it's done.</Bubble>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.9, duration: 0.5 }}
-                  className="flex items-center gap-2 pt-1 text-meta font-semibold text-accent"
-                >
-                  <CheckCircle2 size={15} /> Your request has been handed to SeniorG.
-                </motion.p>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ── Stay on top · connected · smart ─────────────────── */}
-        <section className="py-16 sm:py-24">
-          <div className="mx-auto max-w-page page-gutter">
-            <Reveal>
-              <h2 className="max-w-2xl text-balance font-serif text-[2rem] leading-tight sm:text-[2.5rem]">The rest of life, kept in good order.</h2>
-            </Reveal>
-
-            <div className="mt-10 grid gap-5 lg:grid-cols-[1fr_1.15fr_1fr]">
-              {/* Reminders & renewals — a list, because that's what it is */}
-              <Reveal className="rounded-[1.75rem] bg-sand p-6 sm:p-7">
-                <Eyebrow>Stay on top</Eyebrow>
-                <p className="mt-2 font-serif text-[1.5rem] leading-tight">Reminders & Renewals</p>
-                <p className="mt-2 text-body-sm text-ink-2">Life certificate, insurance, property tax — in good time, with what to do.</p>
-                <ul className="mt-5 divide-y divide-line rounded-tile bg-card px-4 shadow-soft">
-                  {[
-                    { icon: FileCheck2, title: "Life certificate", meta: "Due 30 Nov · explained", tone: "text-needs" },
-                    { icon: ShieldCheck, title: "Health insurance renewal", meta: "In 9 weeks", tone: "text-ink-3" },
-                    { icon: CalendarClock, title: "Property tax", meta: "Paid · on record", tone: "text-success" },
-                  ].map(({ icon: Icon, title, meta, tone }) => (
-                    <li key={title} className="flex items-center gap-3 py-3">
-                      <Icon size={20} className={tone} />
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-body-sm font-semibold text-ink">{title}</span>
-                        <span className={["block text-meta", tone].join(" ")}>{meta}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-
-              {/* Events — a photograph and a ticket */}
-              <Reveal delay={0.08} className="relative min-h-[24rem] overflow-hidden rounded-[1.75rem] text-white">
-                <Photo slot="theatre" className="absolute inset-0 h-full w-full" rounded="rounded-none" />
-                <div className="scrim-bottom absolute inset-0" />
-                <div className="absolute inset-x-0 top-0 p-6 sm:p-7">
-                  <p className="text-tag font-semibold uppercase tracking-[0.14em] text-accent">Stay connected</p>
-                  <p className="mt-2 font-serif text-[1.5rem] leading-tight">Recreational Events & Local Life</p>
-                </div>
-                <div className="absolute inset-x-5 bottom-5 flex items-center gap-3 rounded-tile bg-card p-4 text-ink shadow-lift sm:inset-x-7 sm:bottom-7">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-tint text-accent-deep">
-                    <Ticket size={20} />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block font-semibold leading-snug">Pune Theatre — Demo</span>
-                    <span className="block text-meta text-ink-2">Sat · 7 pm · 2 seats · in your calendar</span>
-                  </span>
-                </div>
-              </Reveal>
-
-              {/* Smart Minutes — a player */}
-              <Reveal delay={0.16} className="overflow-hidden rounded-[1.75rem] border border-card-border bg-card shadow-soft">
-                <div className="relative">
-                  <Photo slot="phone" className="aspect-[16/10]" rounded="rounded-none" />
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-brand-deep shadow-lift">
-                      <PlayCircle size={30} />
-                    </span>
-                  </span>
-                  <span className="absolute bottom-3 right-3 rounded-pill bg-ink/75 px-2.5 py-0.5 text-tag font-semibold text-white">1:45</span>
-                </div>
-                <div className="p-6 sm:p-7">
-                  <Eyebrow>Stay smart</Eyebrow>
-                  <p className="mt-2 font-serif text-[1.5rem] leading-tight">Smart Minutes</p>
-                  <p className="mt-2 text-body-sm text-ink-2">Two-minute guides — spotting a fraud call, using UPI safely — from verified sources.</p>
-                </div>
-              </Reveal>
-            </div>
           </div>
         </section>
 
@@ -393,7 +235,7 @@ export function Landing() {
                   <span className="text-section text-white/80">/ month</span>
                 </p>
                 <p className="mt-1 text-meta text-white/65">{PRICE_NOTE}</p>
-                <p className="mt-3 max-w-md text-body text-white/85">Your trusted household service desk + local life companion.</p>
+                <p className="mt-3 max-w-md text-body text-white/85">Your trusted companion for independent ageing.</p>
               </div>
               <div className="p-7 sm:p-10">
                 <ul className="grid gap-3 sm:grid-cols-2">
@@ -441,37 +283,5 @@ export function Landing() {
         <DirectProspectSheet open={directOpen} onClose={() => setDirectOpen(false)} />
       </div>
     </MotionConfig>
-  );
-}
-
-function ServiceStory({ slot, icon, title, line, snippet, delay }: { slot: ImageSlot; icon: React.ReactNode; title: string; line: string; snippet: string; delay: number }) {
-  return (
-    <Reveal delay={delay} className="grid overflow-hidden rounded-[1.75rem] border border-card-border bg-surface sm:grid-cols-[11rem_1fr]">
-      <Photo slot={slot} className="h-40 sm:h-full" rounded="rounded-none" />
-      <div className="p-5 sm:p-6">
-        <p className="flex items-center gap-2 text-body-sm font-semibold text-brand">
-          {icon} {title}
-        </p>
-        <p className="mt-1.5 text-body text-ink">{line}</p>
-        <p className="mt-3 inline-flex items-center gap-2 rounded-pill bg-brand-tint px-3 py-1 text-meta font-semibold text-brand-dark">
-          <span className="h-2 w-2 rounded-full bg-brand" aria-hidden="true" /> {snippet}
-        </p>
-      </div>
-    </Reveal>
-  );
-}
-
-function Bubble({ children, me }: { children: React.ReactNode; me?: boolean }) {
-  return (
-    <div className={["flex", me ? "justify-end" : "justify-start"].join(" ")}>
-      <p
-        className={[
-          "max-w-[85%] rounded-[1.25rem] px-4 py-2.5 text-body-sm",
-          me ? "rounded-br-md bg-white text-ink" : "rounded-bl-md bg-accent text-ink",
-        ].join(" ")}
-      >
-        {children}
-      </p>
-    </div>
   );
 }
