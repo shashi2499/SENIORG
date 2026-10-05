@@ -26,6 +26,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { PageHeader } from "@/components/ds/PageHeader";
+import { CityPreviewNote } from "@/components/direct/CityPreviewNote";
 import { SectionHeader } from "@/components/ds/SectionHeader";
 import { Photo } from "@/components/ds/Photo";
 import { ListRow, RowList, IconBadge } from "@/components/ds/ListRow";
@@ -67,6 +68,7 @@ export function Services() {
         title="What can we take care of?"
         subtitle="One request, a verified person, a clear price — and SeniorG coordinating until it's done."
       />
+      <CityPreviewNote className="-mt-8" />
 
       {/* HOME REPAIRS — getting something fixed */}
       <Experience

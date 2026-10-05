@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { FlaskConical, RotateCcw, LifeBuoy, Repeat } from "lucide-react";
+import { FlaskConical, RotateCcw, Repeat } from "lucide-react";
+import { DirectButton } from "../direct/SeniorGDirect";
 import { NAV_ITEMS, FAMILY_NAV_ITEMS } from "./nav";
 import { Wordmark } from "./TopBar";
 import { isFamilyRole, isHouseholdMember } from "@/lib/visibility";
@@ -37,13 +38,7 @@ export function Sidebar() {
       </nav>
 
       {!isFamilyRole(person) && person?.role !== "COORDINATOR" && (
-        <button
-          onClick={() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true })}
-          className="mx-4 mt-6 flex min-h-[52px] items-center gap-3 rounded-pill bg-brand-deep px-4 text-left text-white hover:bg-brand-dark"
-        >
-          <LifeBuoy size={20} className="text-accent" />
-          <span className="text-body-sm font-semibold">Talk to SeniorG</span>
-        </button>
+        <DirectButton variant="sidebar" className="mx-4 mt-6" />
       )}
 
       {/* Reviewer tooling — kept visibly apart from the product. */}

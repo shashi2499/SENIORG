@@ -1,4 +1,5 @@
-import { ChevronLeft, LifeBuoy } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
+import { DirectButton } from "../direct/SeniorGDirect";
 import { StepIndicator } from "./StepIndicator";
 import { useStore } from "@/store/StoreContext";
 
@@ -28,12 +29,7 @@ export function JourneyHeader({ title, stepIndex, stepCount, onBack, onHelp }: J
             <h1 className="truncate font-serif text-section text-ink">{title}</h1>
           </div>
         </div>
-        <button
-          onClick={onHelp ?? (() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true }))}
-          className="flex h-11 shrink-0 items-center gap-1.5 rounded-pill bg-brand-tint px-4 text-body-sm font-semibold text-brand-dark hover:bg-brand-soft"
-        >
-          <LifeBuoy size={18} /> Help
-        </button>
+        <DirectButton variant="pill" label="Need help?" onClick={onHelp ?? (() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true }))} />
       </div>
       <div className="mt-3">
         <StepIndicator current={stepIndex} total={stepCount} />

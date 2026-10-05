@@ -836,6 +836,40 @@ export function reducer(state: AppState, action: Action): AppState {
       return next;
     }
 
+    // Onboarding personalises the principal member's own account (name, city,
+    // preferred help language) and switches the view to them. Nothing else in
+    // the household, request or permission model changes.
+    case "COMPLETE_ONBOARDING": {
+      const { profile } = action;
+      const person = state.people[profile.personId];
+      if (!person) return state;
+      const name = profile.name.trim() || person.name;
+      const initials = name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((w) => w[0]!.toUpperCase())
+        .join("");
+      const prefs = person.preferences;
+      return {
+        ...state,
+        onboarding: profile,
+        currentRoleId: profile.personId,
+        people: {
+          ...state.people,
+          [person.id]: {
+            ...person,
+            name,
+            avatarInitials: initials || person.avatarInitials,
+            city: profile.city,
+            preferences: prefs
+              ? { ...prefs, languages: [profile.language, ...prefs.languages.filter((l) => l !== profile.language)] }
+              : prefs,
+          },
+        },
+      };
+    }
+
     case "RESET_DEMO":
       return makeInitialState();
 

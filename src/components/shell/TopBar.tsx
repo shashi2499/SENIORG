@@ -1,10 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { ChevronLeft, LifeBuoy, Bell } from "lucide-react";
+import { ChevronLeft, Inbox } from "lucide-react";
+import { DirectButton } from "../direct/SeniorGDirect";
 import { NAV_ITEMS, TOP_LEVEL_PATHS } from "./nav";
 import { useCurrentPerson, useStore } from "@/store/StoreContext";
 
-// Calm top bar: where you came from on the left, notifications and Help on the
-// right — Help is labelled and present on every screen.
+// Calm top bar: where you came from on the left, updates and SeniorG Direct on
+// the right. The bell is reserved for SeniorG Direct (a person), so updates use
+// an inbox — the two never look alike.
 export function TopBar() {
   const { state, dispatch } = useStore();
   const navigate = useNavigate();
@@ -38,22 +40,16 @@ export function TopBar() {
           <button
             onClick={() => dispatch({ type: "TOGGLE_NOTIFICATIONS", open: true })}
             className="relative flex h-11 w-11 items-center justify-center rounded-full text-ink-2 hover:bg-sand hover:text-ink"
-            aria-label={unread ? `Notifications, ${unread} new` : "Notifications"}
+            aria-label={unread ? `Updates, ${unread} new` : "Updates"}
           >
-            <Bell size={22} strokeWidth={1.75} />
+            <Inbox size={22} strokeWidth={1.75} />
             {unread > 0 && (
               <span className="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-tag font-bold text-ink">
                 {unread}
               </span>
             )}
           </button>
-          <button
-            onClick={() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true })}
-            className="flex h-11 items-center gap-1.5 rounded-pill bg-brand-tint px-4 font-semibold text-brand-dark hover:bg-brand-soft"
-          >
-            <LifeBuoy size={20} strokeWidth={1.9} />
-            <span className="text-body-sm">Help</span>
-          </button>
+          <DirectButton variant="header" />
           <button
             onClick={() => dispatch({ type: "TOGGLE_ROLE_SWITCHER", open: true })}
             className="ml-1 flex h-10 w-10 items-center justify-center rounded-full bg-brand text-tag font-bold text-white lg:hidden"

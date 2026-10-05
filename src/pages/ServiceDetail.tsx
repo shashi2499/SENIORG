@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ExternalLink, Check, X, LifeBuoy, HeartPulse, FileQuestion } from "lucide-react";
+import { ExternalLink, Check, X, HeartPulse, FileQuestion } from "lucide-react";
+import { DirectMark } from "@/components/direct/SeniorGDirect";
 import { PageHeader } from "@/components/ds/PageHeader";
 import { Photo } from "@/components/ds/Photo";
 import { PlannedState, EmptyState, DemoTag } from "@/components/ds/States";
@@ -43,7 +44,7 @@ export function ServiceDetail() {
         <PageHeader eyebrow="Services" title={service.name} />
         <PlannedState icon={HeartPulse} title="Not offered yet" body="Support around hospital stays and health paperwork is something members ask for. We'd rather say 'not yet' than promise a date we can't keep.">
           <Button variant="secondary" onClick={() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true })}>
-            <LifeBuoy size={18} /> Talk to SeniorG instead
+            <DirectMark size="sm" /> Talk to SeniorG instead
           </Button>
         </PlannedState>
       </div>
@@ -81,7 +82,7 @@ export function ServiceDetail() {
           <ExternalLink size={20} /> Continue with partner
         </Button>
         <Button variant="secondary" onClick={() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true })}>
-          <LifeBuoy size={20} /> Ask the desk to help me prepare
+          <DirectMark size="sm" /> Ask SeniorG to help me prepare
         </Button>
       </div>
 

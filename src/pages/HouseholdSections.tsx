@@ -8,6 +8,7 @@ import { getVisibleRequests } from "@/lib/visibility";
 import { myTickets } from "@/lib/events";
 import { useTextSize, type TextSize } from "@/lib/textSize";
 import { formatShortDateTime } from "@/lib/date";
+import { ASSISTANCE_LABEL, FOCUS_LABEL, planSummary } from "@/lib/onboarding";
 
 // Household areas from the approved IA. Where a capability isn't built yet the
 // page says so plainly; where SeniorG already holds the data, it shows it.
@@ -55,8 +56,10 @@ const SIZES: { id: TextSize; label: string; sample: string }[] = [
 
 export function ProfilePage() {
   const person = useCurrentPerson();
+  const { state } = useStore();
   const [size, setSize] = useTextSize();
   const prefs = person?.preferences;
+  const joined = person && state.onboarding?.personId === person.id ? state.onboarding : undefined;
   return (
     <div className="space-y-8">
       <PageHeader eyebrow="Household" title="Profile & preferences" />
@@ -84,6 +87,30 @@ export function ProfilePage() {
           ))}
         </div>
       </section>
+
+      {joined && (
+        <section className="surface-primary p-5 sm:p-6">
+          <h2 className="font-serif text-section text-ink">Your SeniorG membership</h2>
+          <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+            {[
+              ["Plan", planSummary(joined.plan)],
+              ["City", joined.city],
+              ["Mobile", `+91 ${joined.mobile}`],
+              ["Email", joined.email],
+              ["Identity", `Demo verified · Aadhaar XXXX XXXX ${joined.aadhaarLast4}`],
+              ["SeniorG supports", joined.supportScope === "WITH_SPOUSE" ? "You & your spouse (independent accounts)" : "Just you"],
+              ["Help with most", joined.focus.map((f) => FOCUS_LABEL[f]).join(", ")],
+              ["How SeniorG helps", ASSISTANCE_LABEL[joined.assistance].title],
+            ].map(([k, v]) => (
+              <div key={k}>
+                <dt className="text-meta text-ink-3">{k}</dt>
+                <dd className="break-words text-body text-ink">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-4 text-meta text-ink-3">Demo only — no real Aadhaar, OTP or payment was processed when you joined.</p>
+        </section>
+      )}
 
       {prefs && (
         <section className="surface-primary p-5 sm:p-6">

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, CalendarClock, Headset, LifeBuoy, PlayCircle, ShieldCheck, Sun, Users, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarClock, Headset, PlayCircle, ShieldCheck, Sun, Users, CheckCircle2, Sparkles } from "lucide-react";
 import { DeskHome } from "./DeskHome";
 import { FamilyHome } from "./FamilyHome";
 import { Photo } from "@/components/ds/Photo";
+import { DirectButton } from "@/components/direct/SeniorGDirect";
+import { CityPreviewNote } from "@/components/direct/CityPreviewNote";
 import { SectionHeader } from "@/components/ds/SectionHeader";
 import { ListRow, RowList, DateBlock } from "@/components/ds/ListRow";
 import { MediaTile } from "@/components/ds/MediaTile";
@@ -18,6 +20,7 @@ import { activeTickets, categoryMeta, priceLabel } from "@/lib/events";
 import { eventImage, requestImage, videoImage, type ImageSlot } from "@/lib/imagery";
 import { SM_CATEGORIES, durationLabel, featuredSmartMinute, recentlyWatched, savedSmartMinutes } from "@/lib/smartMinutes";
 import { reminderSection } from "@/lib/reminderUrgency";
+import { ASSISTANCE_LABEL, MEMBERSHIP_PRICE_LABEL, formatDay, trialEndDate } from "@/lib/onboarding";
 
 const ease = [0.2, 0, 0, 1] as const;
 
@@ -43,6 +46,13 @@ export function Home() {
   const partner = partnerId ? state.people[partnerId] : undefined;
   const hour = demoToday().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  // What the person told SeniorG when they joined (front-door onboarding).
+  const joined = state.onboarding?.personId === person.id ? state.onboarding : undefined;
+  // The seeded spouse is only named alongside the seeded demo member — never
+  // alongside a name someone typed at registration.
+  const showPartner = !!partner && (!joined || (joined.supportScope === "WITH_SPOUSE" && joined.demoPersona));
+  const household = !!joined && joined.supportScope === "WITH_SPOUSE" && !joined.demoPersona;
+  const place = joined && joined.city !== state.household.city ? joined.city : state.household.address.split(",").slice(-2).join(",").trim();
 
   const spotlight = spotlightRequest(state, person);
   const sp = spotlight ? presentRequest(spotlight, state.providers, state.people, person.id) : undefined;
@@ -89,8 +99,17 @@ export function Home() {
           {greeting}, {firstName}
         </h1>
         <p className="mt-1 text-body text-ink-2">
-          {partner ? `${person.name.split(" ")[0]} & ${partner.name.split(" ")[0]}` : firstName} · {state.household.address.split(",").slice(-2).join(",").trim()}
+          {showPartner && partner ? `${person.name.split(" ")[0]} & ${partner.name.split(" ")[0]}` : household ? "Your SeniorG household" : firstName} · {place}
         </p>
+        {joined && (
+          <p className="mt-3 flex flex-wrap gap-2 text-meta">
+            <span className="rounded-pill bg-brand-tint px-3 py-1 font-semibold text-brand-dark">
+              {joined.plan === "TRIAL" ? `Free trial · until ${formatDay(trialEndDate())}` : `Member · ${MEMBERSHIP_PRICE_LABEL}`}
+            </span>
+            <span className="rounded-pill bg-sand px-3 py-1 text-ink-2">{ASSISTANCE_LABEL[joined.assistance].title}</span>
+            <span className="rounded-pill bg-sand px-3 py-1 text-ink-2">Help in {joined.language}</span>
+          </p>
+        )}
       </motion.header>
 
       {/* TODAY: the one thing that matters most, or a calm day */}
@@ -209,14 +228,7 @@ export function Home() {
           ).map((s) => (
             <MediaTile key={s.title} slot={s.slot} to={s.to} title={s.title} meta={s.meta} ratio="square" overlay compact />
           ))}
-          <button
-            onClick={() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true })}
-            className="flex aspect-square flex-col rounded-card bg-brand-deep p-3.5 text-left text-white shadow-soft transition hover:shadow-lift"
-          >
-            <LifeBuoy size={26} className="text-accent" />
-            <span className="mt-auto font-serif text-subhead leading-tight">Talk to SeniorG</span>
-            <span className="mt-1 text-meta text-white/80">Anything else — a person helps</span>
-          </button>
+          <DirectButton variant="tile" />
         </div>
       </section>
 
@@ -224,6 +236,7 @@ export function Home() {
       {nearYou.length > 0 && (
         <section>
           <SectionHeader title="Near you this week" subtitle="Talks, music, walks and your association's events." action={{ label: "Explore", to: "/explore" }} />
+          <CityPreviewNote className="-mt-1 mb-4" />
           <div className="no-scrollbar -mx-gutter flex snap-x gap-3 overflow-x-auto px-gutter pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 2xl:grid-cols-4">
             {nearYou.map((e) => (
               <div key={e.id} className="w-64 shrink-0 snap-start sm:w-auto">

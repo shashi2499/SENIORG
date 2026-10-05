@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { AlertCircle, Headset, CheckCircle2, CalendarClock, LifeBuoy, ChevronRight } from "lucide-react";
+import { AlertCircle, Headset, CheckCircle2, CalendarClock, ChevronRight } from "lucide-react";
+import { DirectButton } from "../direct/SeniorGDirect";
 import { useCurrentPerson, useStore } from "@/store/StoreContext";
 import { attentionFor, handledByDesk } from "@/lib/attention";
 import { presentRequest } from "@/lib/presentation";
@@ -7,7 +8,7 @@ import { presentRequest } from "@/lib/presentation";
 // The desktop right rail answers two questions only: what needs me, and who is
 // helping. Nothing decorative lives here.
 export function RightRail() {
-  const { state, dispatch } = useStore();
+  const { state } = useStore();
   const person = useCurrentPerson();
   if (!person) return null;
   const items = attentionFor(state, person);
@@ -64,19 +65,7 @@ export function RightRail() {
           </section>
         )}
 
-        <section className="rounded-card bg-brand-deep p-5 text-white">
-          <h2 className="flex items-center gap-2 text-subhead text-white">
-            <LifeBuoy size={18} className="text-accent" /> SeniorG help
-          </h2>
-          <p className="mt-2 text-body-sm text-white/80">Talk to a person, request a call-back, or hand over anything you'd rather not do.</p>
-          <p className="mt-1 text-meta text-white/60">Desk hours 8 am – 8 pm (demo)</p>
-          <button
-            onClick={() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true })}
-            className="mt-4 min-h-[44px] w-full rounded-pill bg-white text-body-sm font-semibold text-brand-deep hover:bg-brand-tint"
-          >
-            Talk to SeniorG
-          </button>
-        </section>
+        <DirectButton variant="rail" />
       </div>
     </aside>
   );

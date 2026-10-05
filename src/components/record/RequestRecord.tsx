@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ClipboardList, History, LifeBuoy, Users, ShieldCheck } from "lucide-react";
+import { ChevronDown, ClipboardList, History, Users, ShieldCheck } from "lucide-react";
+import { DirectButton } from "../direct/SeniorGDirect";
 import type { ServiceRequest } from "@/types/entities";
 import { Photo } from "@/components/ds/Photo";
 import { StatusPill } from "@/components/ds/StatusPill";
@@ -152,16 +153,11 @@ export function RequestRecord({ request, embedded }: { request: ServiceRequest; 
         </div>
       )}
       {!isDesk && (
-        <button
-          onClick={() => dispatch({ type: "TOGGLE_HELP_SHEET", open: true })}
-          className="flex w-full items-center gap-3 rounded-card border border-card-border bg-card p-4 text-left shadow-soft hover:bg-sand"
-        >
-          <LifeBuoy size={22} className="shrink-0 text-brand" />
-          <span className="flex-1">
-            <span className="block font-semibold text-ink">Get help with this</span>
-            <span className="block text-body-sm text-ink-2">Talk to the SeniorG desk about this request.</span>
-          </span>
-        </button>
+        <DirectButton
+          variant="panel"
+          label={request.owner === "DESK" ? "Talk to SeniorG about this" : "Ask SeniorG to handle this"}
+          sublabel={request.owner === "DESK" ? "SeniorG Direct — the desk already has this request." : "SeniorG Direct — call, chat, or hand this request over."}
+        />
       )}
       <DemoStrip request={request} />
     </div>

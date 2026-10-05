@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PlayCircle, Bookmark, MapPin, ArrowRight, Users } from "lucide-react";
 import { PageHeader } from "@/components/ds/PageHeader";
+import { CityPreviewNote, useJoinedProfile } from "@/components/direct/CityPreviewNote";
 import { SectionHeader } from "@/components/ds/SectionHeader";
 import { Photo } from "@/components/ds/Photo";
 import { ListRow, RowList, DateBlock } from "@/components/ds/ListRow";
@@ -50,13 +51,14 @@ export function Explore() {
   const thisWeek = upcoming.filter((e) => e.status === "ON_SALE" && new Date(e.dateTime).getTime() <= weekEnd && e.id !== featured?.id);
   const association = upcoming.filter((e) => e.bookingType === "ASSOCIATION");
   const plans = person ? activeTickets(state.tickets, person) : [];
+  const joined = useJoinedProfile();
 
   return (
     <div className="space-y-12">
       <PageHeader
         eyebrow={
           <span className="inline-flex items-center gap-1.5">
-            <MapPin size={15} /> Near Kothrud, Pune
+            <MapPin size={15} /> {joined?.city === "Mumbai" ? "Mumbai preview" : "Near Kothrud, Pune"}
           </span>
         }
         title="What can I do nearby?"
@@ -69,6 +71,7 @@ export function Explore() {
           </>
         }
       />
+      <CityPreviewNote className="-mt-8" />
 
       {/* Your plans */}
       {plans.length > 0 && (

@@ -25,6 +25,9 @@ import { DocumentsPage, TrustedContactsPage, ProfilePage, PaymentsPage } from "@
 import { AcRepairBooking } from "@/pages/journeys/AcRepairBooking";
 import { GoWithMeBooking } from "@/pages/journeys/GoWithMeBooking";
 import { HouseHelpBooking } from "@/pages/journeys/HouseHelpBooking";
+import { Landing } from "@/pages/Landing";
+import { Join } from "@/pages/onboarding/Join";
+import { OnboardingProvider } from "@/onboarding/OnboardingContext";
 
 // Services, Explore and Household belong to the member. Family members only
 // get Home and Requests (their shared view), so these routes bounce them home.
@@ -40,6 +43,16 @@ function JourneyShell() {
   );
 }
 
+// The front door — landing and join flow — sits before the app shell. It hands
+// over to the same app (no parallel product) once the person enters SeniorG.
+function OnboardingShell() {
+  return (
+    <OnboardingProvider>
+      <Outlet />
+    </OnboardingProvider>
+  );
+}
+
 function MemberAreaGuard() {
   const person = useCurrentPerson();
   return person && !isHouseholdMember(person) ? <Navigate to="/home" replace /> : <Outlet />;
@@ -48,6 +61,12 @@ function MemberAreaGuard() {
 export default function App() {
   return (
     <Routes>
+      <Route element={<OnboardingShell />}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/join" element={<Navigate to="/join/details" replace />} />
+        <Route path="/join/:step" element={<Join />} />
+      </Route>
+
       {/* Full-screen booking wizards live outside the five-tab shell —
           a focused task flow, not another tab destination. */}
       <Route element={<JourneyShell />}>
@@ -59,7 +78,6 @@ export default function App() {
       </Route>
 
       <Route element={<AppShell />}>
-        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
 
         <Route element={<MemberAreaGuard />}>

@@ -28,6 +28,35 @@ export interface UiState {
   notificationsOpen: boolean;
 }
 
+// The new front door (landing → registration → demo verification → plan →
+// personalisation). Everything here is demo-only: no real Aadhaar, OTP or
+// payment is ever collected or processed.
+export type OnboardingPlan = "MEMBERSHIP" | "TRIAL";
+export type SupportScope = "JUST_ME" | "WITH_SPOUSE";
+export type HelpFocus = "HOME_SERVICES" | "GO_WITH_ME" | "REMINDERS" | "LOCAL_ACTIVITIES";
+export type HelpLanguage = "English" | "Hindi" | "Marathi";
+export type AssistanceStyle = "SELF" | "HELP_ME_BOOK" | "HANDLE_IT";
+
+export interface OnboardingProfile {
+  personId: string; // the principal member this registration personalises
+  name: string;
+  mobile: string;
+  email: string;
+  city: "Pune" | "Mumbai";
+  dob: string; // YYYY-MM-DD
+  aadhaarLast4: string; // demo field only — never a real number
+  plan: OnboardingPlan;
+  supportScope: SupportScope;
+  focus: HelpFocus[];
+  language: HelpLanguage;
+  assistance: AssistanceStyle;
+  // True only when "Fill demo details" was used: the person is the seeded demo
+  // member, so pairing them with the seeded spouse is coherent. A typed name is
+  // never paired with a seeded spouse.
+  demoPersona: boolean;
+  completedAt: string;
+}
+
 export interface AppState {
   household: Household;
   people: Record<string, Person>;
@@ -42,6 +71,7 @@ export interface AppState {
   notifications: AppNotification[];
   deskConversations: Record<string, DeskConversation>;
   currentRoleId: string;
+  onboarding?: OnboardingProfile;
   ui: UiState;
 }
 
@@ -126,4 +156,5 @@ export type Action =
   | { type: "TOGGLE_VIDEO_WATCHED"; videoId: string; personId: string }
   | { type: "SHARE_VIDEO"; videoId: string; fromId: string; toId: string }
   | { type: "MATCH_PROVIDER"; requestId: string; actorId: string }
+  | { type: "COMPLETE_ONBOARDING"; profile: OnboardingProfile }
   | { type: "RESET_DEMO" };

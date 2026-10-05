@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import { Phone, PhoneCall, MessageSquare, HandHelping, ShieldAlert, Undo2, ChevronRight, Headset } from "lucide-react";
 import { Sheet } from "./ui/Sheet";
+import { DIRECT_NAME, DIRECT_TAGLINE, DirectMark } from "./direct/SeniorGDirect";
 import { Button } from "./ui/Button";
 import { HandoverPanel, canHandOver, canTakeBack } from "./HandoverPanel";
 import { useCurrentPerson, useStore } from "@/store/StoreContext";
@@ -9,7 +10,7 @@ import { useCurrentPerson, useStore } from "@/store/StoreContext";
 const INFO_OPTIONS = [
   {
     id: "call",
-    label: "Talk to SeniorG now",
+    label: "Call SeniorG now",
     icon: Phone,
     info: "Demo: a SeniorG coordinator would call you within a minute. No real call is placed in this prototype.",
   },
@@ -17,11 +18,11 @@ const INFO_OPTIONS = [
     id: "callback",
     label: "Request a call-back",
     icon: PhoneCall,
-    info: "Demo: call-back requested. The desk would call you back within 30 minutes during desk hours.",
+    info: "Demo: call-back requested. The desk would call you back within 30 minutes, any time of day.",
   },
   {
     id: "message",
-    label: "Message the desk",
+    label: "Chat with SeniorG",
     icon: MessageSquare,
     info: "Demo: messaging is simulated here. For a request in progress, choose 'Have SeniorG handle this'.",
   },
@@ -188,9 +189,9 @@ export function HelpSheet() {
   }
 
   return (
-    <Sheet open={open} onClose={close} title="Talk to SeniorG">
-      <p className="mb-5 flex items-center gap-2 rounded-tile bg-brand-tint px-4 py-3 text-body-sm text-brand-dark">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-success" aria-hidden="true" /> A person is available now · desk hours 8 am – 8 pm (demo)
+    <Sheet open={open} onClose={close} title={DIRECT_NAME} subtitle={`${DIRECT_TAGLINE} — talk to a person, or hand something over.`}>
+      <p className="mb-5 flex items-center gap-3 rounded-tile bg-brand-tint px-4 py-3 text-body-sm text-brand-dark">
+        <DirectMark size="sm" /> A person is available now · anytime, 24 hours (demo)
       </p>
       {body}
     </Sheet>

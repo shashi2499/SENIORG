@@ -90,3 +90,27 @@
     background: linear-gradient(to top, rgba(14, 18, 30, 0.72) 0%, rgba(14, 18, 30, 0.35) 45%, rgba(14, 18, 30, 0) 75%);
   }
 }
+
+/* SeniorG Direct bell: a gentle, continuous ring — "a person is always there".
+   Reserved for the SeniorG Direct identity; ordinary icons never animate. A short
+   swing, then a calm rest, looping indefinitely. */
+@keyframes sg-bell-ring {
+  0%, 30%, 100% { transform: rotate(0deg); }
+  4% { transform: rotate(12deg); }
+  8% { transform: rotate(-10deg); }
+  12% { transform: rotate(8deg); }
+  16% { transform: rotate(-6deg); }
+  20% { transform: rotate(4deg); }
+  24% { transform: rotate(-2deg); }
+}
+.sg-bell-ring {
+  transform-origin: 50% 15%;
+  animation: sg-bell-ring 2.8s ease-in-out infinite;
+}
+/* Reduced motion: a still bell (the global 1ms rule would otherwise make an
+   infinite loop flicker). */
+@media (prefers-reduced-motion: reduce) {
+  .sg-bell-ring {
+    animation: none !important;
+  }
+}
